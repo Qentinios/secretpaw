@@ -1,0 +1,6 @@
+Hey {{ user }},
+
+Please click this link http://{{ site }}/accounts/activate/{{ activation_key }} to finish your registration.
+
+Regards,
+Secret Paws

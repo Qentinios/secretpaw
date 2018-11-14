@@ -1,0 +1,85 @@
+{% extends 'secretpawapp/base.html' %}
+
+{% block content %}
+    <div class="container mt-3">
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+            <h2>Secret Paws</h2>
+            <p class="lead">Please create an account in order to take part in the event.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="mb-3">Register</h4>
+                <form action="." method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName">Login</label>
+                            <input type="text" class="form-control" id="login" name="username" placeholder="" value="{{ form.username.value|default_if_none:"" }}" required>
+                            <div class="invalid">
+                                {{ form.username.errors }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" value="{{ form.email.value|default_if_none:"" }}" required>
+                            <div class="invalid">
+                                {{ form.email.errors }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName">Password</label>
+                            <input type="password" class="form-control" id="password1" name="password1" placeholder="" value="" required>
+                            <div class="invalid">
+                                {{ form.password1.errors }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName">Repeat Password</label>
+                            <input type="password" class="form-control" id="password2" name="password2" placeholder="" value="" required>
+                            <div class="invalid">
+                                {{ form.password2.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address">Facebook profile</label>
+                        <input type="text" class="form-control" id="facebook" name="facebook" placeholder="https://www.facebook.com/exampleuser" value="{{ form.facebook.value|default_if_none:"" }}" required>
+                        <div class="invalid">
+                            {{ form.facebook.errors }}
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Create an account</button>
+                    <hr class="mb-4">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="row bs-wizard" style="border-bottom:0;">
+                <div class="col-4 bs-wizard-step active">
+                    <div class="text-center bs-wizard-stepnum">Step 1</div>
+                    <div class="progress"><div class="progress-bar"></div></div>
+                    <button class="bs-wizard-dot btn"></button>
+                    <div class="bs-wizard-info text-center"> Create an account</div>
+                </div>
+                <div class="col-4 bs-wizard-step disabled">
+                    <div class="text-center bs-wizard-stepnum">Step 2</div>
+                    <div class="progress"><div class="progress-bar"></div></div>
+                    <button class="bs-wizard-dot btn"></button>
+                    <div class="bs-wizard-info text-center"> Confirm your email</div>
+                </div>
+
+                <div class="col-4 bs-wizard-step disabled">
+                    <div class="text-center bs-wizard-stepnum">Step 3</div>
+                    <div class="progress"><div class="progress-bar"></div></div>
+                    <button class="bs-wizard-dot btn"></button>
+                    <div class="bs-wizard-info text-center"> Wait for admin to accept your account</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
