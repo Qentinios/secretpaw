@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, url
+
+from secretpawapp import views
 from secretpawapp.views import RegistrationView
 from secretpawapp.forms import RegistrationFormUniqueEmailAndFacebook
 
@@ -25,4 +27,5 @@ urlpatterns = [
         name='registration_register'),
     url(r'^accounts/', include('django_registration.backends.activation.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
+    path('pawgate/', views.pawgate)
 ]

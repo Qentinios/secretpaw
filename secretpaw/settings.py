@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '7d-!pq9)+$n*_v@2c2)rc+s6cmb(35qjt)effi7e1@rdiza_)4'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'secretpawapp.middleware.PawgateMiddleware'
 ]
 
 ROOT_URLCONF = 'secretpaw.urls'
@@ -132,3 +133,6 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 DEFAULT_TO_EMAIL = EMAIL_HOST_USER
+
+PAWGATE_SECRET = config('PAWGATE_SECRET')
+

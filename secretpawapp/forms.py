@@ -2,7 +2,23 @@ from django.core.validators import RegexValidator
 from django_registration.forms import RegistrationFormUniqueEmail
 from django import forms
 
+from secretpaw import settings
 from secretpawapp.models import Profile
+
+
+def validate_secret_correctness(secret):
+    if not hash(secret) == hash(settings.PAWGATE_SECRET):
+        raise forms.ValidationError('Wrong secret')
+
+
+class PawgateForm(forms.Form):
+    secret = forms.CharField()
+
+    def clean_secret(self):
+        secret = self.cleaned_data.get('secret')
+        validate_secret_correctness(secret)
+
+        return secret
 
 
 def validate_unique_facebook(facebook):

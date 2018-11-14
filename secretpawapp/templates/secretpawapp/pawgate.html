@@ -1,0 +1,29 @@
+{% extends 'secretpawapp/base.html' %}
+
+{% block content %}
+
+    <div class="container mt-3">
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+            <h2>Paws Gate</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 offset-md-3 mb-3">
+                <form class="form-signin text-center" method="post" action=".">
+                    {% csrf_token %}
+                    <div class="col-md-12 mb-3">
+                        <label for="inputSecret" class="sr-only">Secret</label>
+                        <input type="password" id="inputSecret" name="secret" class="form-control" placeholder="Secret" required>
+                        <div class="invalid no-list-dots">
+                            {{ form.secret.errors }}
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Continue</button>
+                    </div>
+                </form>
+            </div>
+            <p class="mt-5 mb-3 text-muted">&copy; 2018</p>
+        </div>
+{% endblock %}
