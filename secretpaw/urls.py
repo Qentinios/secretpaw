@@ -22,7 +22,8 @@ from secretpawapp.views import RegistrationView
 from secretpawapp.forms import RegistrationFormUniqueEmailAndFacebook
 
 urlpatterns = [
-    path('admin/', admin.site.urls), url(r'^accounts/register/$', RegistrationView.as_view(
+    path('admin/', admin.site.urls),
+    url(r'^accounts/register/$', RegistrationView.as_view(
         form_class=RegistrationFormUniqueEmailAndFacebook),
         name='registration_register'),
     url(r'^accounts/', include('django_registration.backends.activation.urls')),
