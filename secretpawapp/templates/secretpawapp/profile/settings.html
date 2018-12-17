@@ -1,0 +1,41 @@
+<div class="tab-pane" id="settings">
+    <div>
+        <p class="lead">Profile</p>
+        <form>
+            <div class="form-group">
+                <label for="inputAvatar">Avatar</label>
+                <input type="file" class="form-control-file" id="inputAvatar"
+                       aria-describedby="fileHelp">
+                <small id="fileHelp" class="form-text text-muted">Max 512x512, 5mb, png/jpg only
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="inputStatus">Status</label>
+                <input type="text" class="form-control" id="inputStatus" placeholder="Hii!">
+            </div>
+            <div class="form-group">
+                <label for="inputDescription">Description</label>
+                <textarea class="form-control" id="inputDescription" rows="3"></textarea>
+            </div>
+            <div class="dropdown bootstrap-select show">
+                <div class="form-group">
+                    <label for="selectPreferences">What can I draw</label>
+                    <select class="selectpicker" id="selectPreferences" multiple
+                            data-max-options="2" data-style="" data-min-options="2" required>
+                        <option>Mustard</option>
+                        <option>Ketchup</option>
+                        <option>Relish</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div>
+        <p class="lead">Account</p>
+        <a href="http://localhost:8000/accounts/logout/" class="btn btn-secondary">Logout</a>
+        <a href="http://localhost:8000/accounts/password_change/" class="btn btn-info">Change
+            password</a>
+    </div>
+</div>

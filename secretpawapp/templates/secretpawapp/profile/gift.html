@@ -1,0 +1,34 @@
+<div class="tab-pane" id="gift">
+    <p class="lead">Your gift for someone</p>
+    <h5>Person: Alice</h5>
+    <div class="card gift-card m-2 p-2 w-100">
+        <form>
+            <div class="form-group">
+                <label for="inputGift">Gift</label>
+                <input type="file" class="form-control-file" id="inputGift"
+                       aria-describedby="fileHelp">
+                <small id="fileHelp" class="form-text text-muted">Max 512x512, 5mb, png/jpg only
+                </small>
+            </div>
+            {#                                <img src="https://cdn.shopify.com/s/files/1/0952/9016/products/Flower-Kitty-Jeremiah-Ketner.jpg" class="card-img-top gift" alt="Your gift">#}
+            <div class="form-group mt-4">
+                <label for="inputWishes">Wishes</label>
+                <input type="text" class="form-control" id="inputWishes"
+                       placeholder="All the best!">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <hr>
+    <p class="lead">Gift for you</p>
+    <div class="card gift-card m-2 p-2 w-100">
+        <img src="https://www.interregemr.eu/IManager/Media/65321/1599724/EN/reg/people-to-people.jpg"
+             class="card-img-top gift" alt="Gif four you">
+        <div class="card-body">
+            <blockquote class="blockquote card-text">
+                <p class="mb-0">I hope you like it!</p>
+                <footer class="blockquote-footer"> Unbridle</footer>
+            </blockquote>
+        </div>
+    </div>
+</div><!--/tab-pane-->

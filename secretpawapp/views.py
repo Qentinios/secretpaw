@@ -41,3 +41,7 @@ def pawgate(request):
     return render(request, 'secretpawapp/pawgate.html', {'form': form})
 
 
+def profile(request):
+    return render(request, 'secretpawapp/profile.html', {})
+
+

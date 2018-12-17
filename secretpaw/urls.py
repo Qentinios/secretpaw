@@ -28,5 +28,6 @@ urlpatterns = [
         name='registration_register'),
     url(r'^accounts/', include('django_registration.backends.activation.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
-    path('pawgate/', views.pawgate)
+    path('pawgate/', views.pawgate),
+    url(r'^$', views.profile)
 ]
