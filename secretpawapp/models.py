@@ -18,6 +18,10 @@ class Profile(models.Model):
     tags = models.ManyToManyField(Tag)
 
 
+class CharacterNSFWTypes(models.Model):
+    name = models.CharField(max_length=50)
+
+
 class Character(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     picture = models.ImageField(null=True)
@@ -32,6 +36,7 @@ class Character(models.Model):
     )
     sex = models.CharField(choices=SEX, max_length=1)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    nsfw = models.ManyToManyField(CharacterNSFWTypes)
     description = models.TextField(max_length=250, blank=True)
     hints = models.TextField(max_length=100, blank=True)
 

@@ -5,14 +5,14 @@
         <div class="py-5 text-center">
             <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
             <h2>Secret Paws</h2>
-            <p class="lead">Account activated</p>
+            <p class="lead">Account confirmed</p>
         </div>
 
         <div class="row">
             <div class="col-md-12">
                 <p class="lead">Email has been confirmed<p>
-                <p>To take part in the event, you need to wait for admin to verify and accept your account.<p>
-                <p class="small">For now, you can log in and fulfill your profile.</p>
+                <p>To take part in the event, you need to <b>wait for admin</b> to verify and accept your account.<p>
+                <p class="small">Your account is created and confirmed but is inactive.</p>
 
                 <a class="btn btn-primary" type="submit" href="{% url 'login' %}">Login</a>
             </div>
@@ -32,7 +32,7 @@
                     <div class="bs-wizard-info text-center"> Confirm your email</div>
                 </div>
 
-                <div class="col-4 bs-wizard-step disabled">
+                <div class="col-4 bs-wizard-step complete">
                     <div class="text-center bs-wizard-stepnum">Step 3</div>
                     <div class="progress"><div class="progress-bar"></div></div>
                     <button class="bs-wizard-dot btn"></button>

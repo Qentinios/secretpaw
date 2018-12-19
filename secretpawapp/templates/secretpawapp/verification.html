@@ -1,0 +1,24 @@
+{% extends 'secretpawapp/base.html' %}
+
+{% block content %}
+
+    <div class="container mt-3">
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+            <h2>Secret Paws</h2>
+            <p class="lead">Account inactive</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 offset-md-3 mb-3">
+                <p class="lead">You account is not verified.</p>
+                <p>You need to <b>wait for admin</b> to accept your account. The process usually doesn't take long.</p>
+            </div>
+            <div class="mt-5 mb-3 text-muted">
+                <a href="http://localhost:8000/accounts/logout/">
+                    <input type="button" id="logoutRedirect" class="btn btn-default" value="Logout">
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

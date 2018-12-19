@@ -123,6 +123,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+LOGOUT_REDIRECT_URL = '/accounts/login'
+
 ACCOUNT_ACTIVATION_DAYS = 3
 
 EMAIL_HOST = config('EMAIL_HOST')
