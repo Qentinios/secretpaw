@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django_registration.backends.activation.views import RegistrationView as BaseRegistrationView
 
 from secretpaw import settings
-from secretpawapp.forms import PawgateForm
+from secretpawapp.forms import PawgateForm, UserForm, CharacterForm
+from secretpawapp.models import Profile, Tag
 
 
 class RegistrationView(BaseRegistrationView):
@@ -42,6 +43,41 @@ def pawgate(request):
 
 
 def profile(request):
-    return render(request, 'secretpawapp/profile.html', {})
+    profile_obj = Profile.objects\
+        .select_related('user')\
+        .prefetch_related('tags')\
+        .prefetch_related('characters')\
+        .get(user_id=request.user.id)
+
+    tags = Tag.objects.all()
+    form_settings = _profile_settings(request, profile_obj)
+
+    return render(request, 'secretpawapp/profile.html', {'form': form_settings, 'profile': profile_obj, 'tags': tags})
 
 
+def _profile_settings(request, profile_obj):
+    if request.method == 'POST' and "settings" in request.POST:
+        form_settings = UserForm(request.POST, request.FILES)
+        if form_settings.is_valid():
+            profile_obj.avatar = form_settings.cleaned_data['avatar']
+            profile_obj.description = form_settings.cleaned_data['description']
+            profile_obj.status = form_settings.cleaned_data['status']
+            profile_obj.tags.set(request.POST.getlist('tags'))
+            profile_obj.save()
+
+    else:
+        form_settings = UserForm()
+
+    return form_settings
+
+
+def _profile_characters(request, profile_obj):
+    if request.method == 'POST' and "character" in request.POST:
+        form_character = CharacterForm(request.POST, request.FILES)
+        if form_character.is_valid():
+            pass
+
+    else:
+        form_character = CharacterForm()
+
+    return form_character

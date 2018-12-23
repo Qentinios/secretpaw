@@ -65,7 +65,9 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages'
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
+                'secretpawapp.context_processor.site'
             ],
         },
     },
@@ -118,10 +120,13 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
+SITE_URL = 'http://localhost:8000/'
 
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/file/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'file')
 
 LOGOUT_REDIRECT_URL = '/accounts/login'
 

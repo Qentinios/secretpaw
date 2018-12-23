@@ -10,17 +10,23 @@
 
 
                 <div class="text-center mb-2">
-                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-thumbnail"
+                    {% if profile.avatar %}
+                        <img src="{{ MEDIA_URL }}{{ profile.avatar }}" class="avatar img-thumbnail"
                          alt="avatar">
+                    {% else %}
+                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-thumbnail"
+                         alt="avatar">
+                    {% endif %}
                 </div>
 
                 <div class="status">
-                    I'm looking for friends
+                    {{ profile.status }}
                 </div>
 
                 <div class="preferences mt-3">
-                    <span class="badge badge-warning">Antro</span>
-                    <span class="badge badge-warning">Full</span>
+                    {% for tag in profile.tags.all %}
+                        <span class="badge badge-warning">{{ tag }}</span>
+                    {% endfor %}
                 </div>
 
             </div><!--/col-3-->

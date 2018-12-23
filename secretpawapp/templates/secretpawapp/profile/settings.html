@@ -1,34 +1,41 @@
 <div class="tab-pane" id="settings">
     <div>
         <p class="lead">Profile</p>
-        <form>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="inputAvatar">Avatar</label>
+                {{ form.avatar.errors }}
                 <input type="file" class="form-control-file" id="inputAvatar"
-                       aria-describedby="fileHelp">
+                       aria-describedby="fileHelp" name="avatar">
                 <small id="fileHelp" class="form-text text-muted">Max 512x512, 5mb, png/jpg only
                 </small>
             </div>
             <div class="form-group">
                 <label for="inputStatus">Status</label>
-                <input type="text" class="form-control" id="inputStatus" placeholder="Hii!">
+                {{ form.status.errors }}
+                <input type="text" class="form-control" id="inputStatus" placeholder="Hii!" name="status" value="{{ form.status.value|default:profile.status }}">
             </div>
             <div class="form-group">
                 <label for="inputDescription">Description</label>
-                <textarea class="form-control" id="inputDescription" rows="3"></textarea>
+                {{ form.description.errors }}
+                <textarea class="form-control" id="inputDescription" rows="3" name="description">{{ form.description.value|default:profile.description }}</textarea>
             </div>
             <div class="form-group">
                 <div class="dropdown bootstrap-select show">
                     <label for="selectPreferences">What can I draw</label>
+                    {{ form.tags.errors }}
                     <select class="selectpicker" id="selectPreferences" multiple
-                            data-max-options="2" data-style="" data-min-options="2" required>
-                        <option>Pony</option>
-                        <option>Wolf</option>
-                        <option>Tiger</option>
+                            data-max-options="2" data-style="" data-min-options="2" name="tags" required>
+                            {% for tag in tags %}
+                               <option value="{{tag.id}}"
+                               {% if tag in profile.tags.all %}selected="selected"{% endif %}>
+                               {{tag}}
+                            {% endfor %}
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" name="settings">Submit</button>
         </form>
     </div>
     <hr>

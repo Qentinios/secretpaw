@@ -7,25 +7,20 @@ from django.dispatch import receiver
 class Tag(models.Model):
     name = models.CharField(max_length=50)
 
-
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(null=True)
-    facebook = models.URLField(max_length=250, unique=True)
-    status = models.TextField(max_length=250, blank=True)
-    is_verified = models.BooleanField(default=False)
-    description = models.TextField(max_length=2000, blank=True)
-    tags = models.ManyToManyField(Tag)
+    def __str__(self):
+        return self.name
 
 
 class CharacterNSFWTypes(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 class Character(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    picture = models.ImageField(null=True)
-    picture_author = models.CharField(max_length=50, blank=True)
+    picture = models.ImageField(null=True, upload_to='character')
+    picture_author = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
     age = models.PositiveIntegerField()
     race = models.CharField(max_length=50, blank=True)
@@ -35,17 +30,37 @@ class Character(models.Model):
         ('O', 'Other'),
     )
     sex = models.CharField(choices=SEX, max_length=1)
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    tag = models.OneToOneField(Tag, on_delete=models.CASCADE)
     nsfw = models.ManyToManyField(CharacterNSFWTypes)
     description = models.TextField(max_length=250, blank=True)
     hints = models.TextField(max_length=100, blank=True)
 
+    def __str__(self):
+        return self.name
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(null=True, upload_to='avatar')
+    facebook = models.URLField(max_length=250, unique=True)
+    status = models.TextField(max_length=250, blank=True)
+    is_verified = models.BooleanField(default=False)
+    description = models.TextField(max_length=2000, blank=True)
+    tags = models.ManyToManyField(Tag)
+    characters = models.ManyToManyField(Character)
+
+    def __str__(self):
+        return self.user.username
+
 
 class Gift(models.Model):
-    giver = models.ForeignKey(Profile, related_name='giver', on_delete=models.DO_NOTHING)
-    recipient = models.ForeignKey(Profile, related_name='recipient', on_delete=models.DO_NOTHING)
-    picture = models.ImageField()
-    wishes = models.ImageField(null=True)
+    giver = models.OneToOneField(Profile, related_name='giver', on_delete=models.DO_NOTHING)
+    recipient = models.OneToOneField(Profile, related_name='recipient', on_delete=models.DO_NOTHING)
+    picture = models.ImageField(upload_to='gift')
+    wishes = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.giver.user.username + " > " + self.recipient.user.username
 
 
 class Setting(models.Model):
@@ -55,6 +70,9 @@ class Setting(models.Model):
     name = models.CharField(max_length=200, unique=True, help_text="Name of site-wide variable")
     value = models.CharField(max_length=250, null=True, blank=True, help_text="Value of site-wide variable that "
                                                                               "scripts can reference")
+
+    def __str__(self):
+        return self.name
 
 
 @receiver(pre_save, sender=User)

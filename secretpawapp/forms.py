@@ -1,9 +1,11 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
+from django.forms import ModelForm
 from django_registration.forms import RegistrationFormUniqueEmail
 from django import forms
 
 from secretpaw import settings
-from secretpawapp.models import Profile
+from secretpawapp.models import Profile, Tag, Character
 
 
 def validate_secret_correctness(secret):
@@ -53,3 +55,25 @@ class RegistrationFormUniqueEmailAndFacebook(RegistrationFormUniqueEmail):
         validate_unique_facebook(facebook)
 
         return facebook
+
+
+def validate_max_size(image):
+    if image.size > 5*1024*1024:
+        raise ValidationError("Image file too large ( > 5mb )")
+
+
+class UserForm(ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar', 'status', 'description', 'tags']
+
+    avatar = forms.ImageField(required=False, validators=[validate_max_size])
+    tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
+
+
+class CharacterForm(ModelForm):
+    class Meta:
+        model = Character
+        fields = '__all__'
+
+    picture = forms.ImageField(required=False, validators=[validate_max_size])

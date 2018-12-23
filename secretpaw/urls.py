@@ -14,9 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls.static import static
 from django.urls import path
 from django.conf.urls import include, url
 
+from secretpaw import settings
 from secretpawapp import views
 from secretpawapp.views import RegistrationView
 from secretpawapp.forms import RegistrationFormUniqueEmailAndFacebook
@@ -30,4 +32,4 @@ urlpatterns = [
     url(r'^accounts/', include('django.contrib.auth.urls')),
     path('pawgate/', views.pawgate),
     url(r'^$', views.profile)
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
