@@ -13,27 +13,7 @@ class Tag(models.Model):
 
 class CharacterNSFWTypes(models.Model):
     name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
-
-
-class Character(models.Model):
-    picture = models.ImageField(null=True, upload_to='character')
-    picture_author = models.CharField(max_length=50)
-    name = models.CharField(max_length=50)
-    age = models.PositiveIntegerField()
-    race = models.CharField(max_length=50, blank=True)
-    SEX = (
-        ('W', 'Girl'),
-        ('M', 'Boy'),
-        ('O', 'Other'),
-    )
-    sex = models.CharField(choices=SEX, max_length=1)
-    tag = models.OneToOneField(Tag, on_delete=models.CASCADE)
-    nsfw = models.ManyToManyField(CharacterNSFWTypes)
-    description = models.TextField(max_length=250, blank=True)
-    hints = models.TextField(max_length=100, blank=True)
+    description = models.CharField(max_length=250)
 
     def __str__(self):
         return self.name
@@ -47,16 +27,37 @@ class Profile(models.Model):
     is_verified = models.BooleanField(default=False)
     description = models.TextField(max_length=2000, blank=True)
     tags = models.ManyToManyField(Tag)
-    characters = models.ManyToManyField(Character)
 
     def __str__(self):
         return self.user.username
 
 
+class Character(models.Model):
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    picture = models.ImageField(null=True, upload_to='character')
+    picture_author = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
+    age = models.PositiveIntegerField()
+    race = models.CharField(max_length=50, blank=True)
+    SEX = (
+        ('W', 'Girl'),
+        ('M', 'Boy'),
+        ('O', 'Other'),
+    )
+    sex = models.CharField(choices=SEX, max_length=1)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    nsfw = models.ManyToManyField(CharacterNSFWTypes, blank=True)
+    description = models.TextField(max_length=250, blank=True)
+    hints = models.TextField(max_length=100, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Gift(models.Model):
     giver = models.OneToOneField(Profile, related_name='giver', on_delete=models.DO_NOTHING)
     recipient = models.OneToOneField(Profile, related_name='recipient', on_delete=models.DO_NOTHING)
-    picture = models.ImageField(upload_to='gift')
+    picture = models.ImageField(upload_to='gift', null=True)
     wishes = models.CharField(max_length=100, null=True)
 
     def __str__(self):

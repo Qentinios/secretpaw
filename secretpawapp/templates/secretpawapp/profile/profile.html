@@ -1,16 +1,19 @@
 <div class="tab-pane active" id="profile">
+    {% for field in form_characters %}
+        <div class="form-group {%if field.errors %}has-error{%endif%}"></div>
+    {% endfor %}
     <div class="container-fluid characters">
         <div class="row">
             <p class="lead">Characters</p>
         </div>
         <div class="row flex-row flex-nowrap mb-2">
-            {% for character in profile.characters.all %}
+            {% for character in characters.all %}
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
                     <div class="card flex-fill">
                         <button type="button" class="close" aria-label="Close">
                             <span aria-hidden="true" class="remove-character">&times;</span>
                         </button>
-                        <a data-toggle="modal" data-target="#characterDetails" href=""
+                        <a data-toggle="modal" data-target="#characterDetails_{{ character.id }}" href=""
                            class="deco-none">
                             {% if character.picture %}
                                 <img class="card-img-top"
@@ -27,13 +30,15 @@
                         </a>
                     </div>
                 </div>
+                {% include 'secretpawapp/profile/character.html' %}
             {% endfor %}
+            {% include 'secretpawapp/profile/character.html' %}
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
                 <div class="container">
                     <div class="row align-middle plus-margin-100">
                         <div class="col-6">
                             <button type="button" class="close" aria-label="Close">
-                                <a data-toggle="modal" data-target="#characterDetails" href=""
+                                <a data-toggle="modal" data-target="#characterDetails_" href=""
                                    class="deco-none"><i class="fas fa-plus"></i></a>
                             </button>
                         </div>

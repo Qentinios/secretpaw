@@ -5,7 +5,7 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="inputAvatar">Avatar</label>
-                {{ form.avatar.errors }}
+                {{ form_settings.avatar.errors }}
                 <input type="file" class="form-control-file" id="inputAvatar"
                        aria-describedby="fileHelp" name="avatar">
                 <small id="fileHelp" class="form-text text-muted">Max 512x512, 5mb, png/jpg only
@@ -13,18 +13,18 @@
             </div>
             <div class="form-group">
                 <label for="inputStatus">Status</label>
-                {{ form.status.errors }}
-                <input type="text" class="form-control" id="inputStatus" placeholder="Hii!" name="status" value="{{ form.status.value|default:profile.status }}">
+                {{ form_settings.status.errors }}
+                <input type="text" class="form-control" id="inputStatus" placeholder="Hii!" name="status" value="{{ form_settings.status.value|default:profile.status }}">
             </div>
             <div class="form-group">
                 <label for="inputDescription">Description</label>
-                {{ form.description.errors }}
-                <textarea class="form-control" id="inputDescription" rows="3" name="description">{{ form.description.value|default:profile.description }}</textarea>
+                {{ form_settings.description.errors }}
+                <textarea class="form-control" id="inputDescription" rows="3" name="description">{{ form_settings.description.value|default:profile.description }}</textarea>
             </div>
             <div class="form-group">
                 <div class="dropdown bootstrap-select show">
                     <label for="selectPreferences">What can I draw</label>
-                    {{ form.tags.errors }}
+                    {{ form_settings.tags.errors }}
                     <select class="selectpicker" id="selectPreferences" multiple
                             data-max-options="2" data-style="" data-min-options="2" name="tags" required>
                             {% for tag in tags %}

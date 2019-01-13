@@ -5,7 +5,7 @@ from django_registration.forms import RegistrationFormUniqueEmail
 from django import forms
 
 from secretpaw import settings
-from secretpawapp.models import Profile, Tag, Character
+from secretpawapp.models import Profile, Tag, Character, CharacterNSFWTypes
 
 
 def validate_secret_correctness(secret):
@@ -62,7 +62,7 @@ def validate_max_size(image):
         raise ValidationError("Image file too large ( > 5mb )")
 
 
-class UserForm(ModelForm):
+class SettingsForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['avatar', 'status', 'description', 'tags']
@@ -75,5 +75,12 @@ class CharacterForm(ModelForm):
     class Meta:
         model = Character
         fields = '__all__'
+        exclude = ['owner']
 
     picture = forms.ImageField(required=False, validators=[validate_max_size])
+
+
+class CharacterRemoveForm(ModelForm):
+    class Meta:
+        model = Character
+        fields = 'id'

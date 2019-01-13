@@ -1,23 +1,27 @@
 <div class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="myLargeModalLabel" aria-hidden="true" id="characterDetails">
+     aria-labelledby="myLargeModalLabel" aria-hidden="true" id="characterDetails_{{ character.id }}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Qentinios</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h4 class="modal-title" id="myLargeModalLabel">{{ character.name }}</h4>
+                <a href="" type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
-                </button>
+                </a>
             </div>
             <div class="modal-body">
-                <form>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="character_id" value="{{ character.id }}">
                     <div class="row">
                         <div class="col-lg-6 col-md-12">
-                            <img src="https://cdn.shopify.com/s/files/1/0952/9016/products/Flower-Kitty-Jeremiah-Ketner.jpg" class="card-img-top gift" alt="Your gift">
+                            {% if character.picture %}
+                                <img src="{{ MEDIA_URL }}{{ character.picture }}" class="card-img-top gift" alt="Your character">
+                            {% endif %}
                             <div class="form-group">
                                 <label for="inputCharacter">Character picture</label>
                                 <input type="file" class="form-control-file"
                                        id="inputCharacter"
-                                       aria-describedby="fileHelp">
+                                       aria-describedby="fileHelp" name="picture">
                                 <small id="fileHelp" class="form-text text-muted">Max
                                     512x512,
                                     5mb, png/jpg only
@@ -29,7 +33,7 @@
                                        class="col-sm-4 col-form-label">Art by</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control"
-                                           id="inputAuthor">
+                                           id="inputAuthor" name="picture_author" value="{{ character.picture_author }}">
                                 </div>
                             </div>
                         </div>
@@ -38,7 +42,7 @@
                                 <label for="inputName"
                                        class="col-sm-4 col-form-label">Name</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputName">
+                                    <input type="text" class="form-control" id="inputName" name="name" value="{{ character.name }}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -46,25 +50,24 @@
                                        class="col-sm-4 col-form-label">Age</label>
                                 <div class="col-sm-8">
                                     <input type="number" min="0" max="1000000000"
-                                           class="form-control" id="inputAge">
+                                           class="form-control" id="inputAge" name="age" value="{{ character.age }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputRace"
                                        class="col-sm-4 col-form-label">Race</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputRace">
+                                    <input type="text" class="form-control" id="inputRace" name="race" value="{{ character.race }}">
                                 </div>
                             </div>
                             <fieldset class="form-group">
                                 <div class="row">
-                                    <legend class="col-form-label col-sm-4 pt-0">Sex
-                                    </legend>
+                                    <legend class="col-form-label col-sm-4 pt-0">Sex</legend>
                                     <div class="col-sm-8">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
                                                    id="sexGirl"
-                                                   value="girl" name="sex">
+                                                   value="W" name="sex" {% if "W" == character.sex %}checked{% endif %}>
                                             <label class="form-check-label radio-inline"
                                                    for="sexGirl">
                                                 Girl
@@ -73,7 +76,7 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
                                                    id="sexBoy"
-                                                   value="boy" name="sex">
+                                                   value="M" name="sex" {% if "M" == character.sex %}checked{% endif %}>
                                             <label class="form-check-label" for="sexBoy">
                                                 Boy
                                             </label>
@@ -81,7 +84,7 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
                                                    id="sexOther"
-                                                   value="other" name="sex">
+                                                   value="O" name="sex" {% if "O" == character.sex %}checked{% endif %}>
                                             <label class="form-check-label" for="sexOther">
                                                 Other
                                             </label>
@@ -89,20 +92,16 @@
                                     </div>
                                 </div>
                             </fieldset>
-
-                            <div class="form-group">
-                                <div class="dropdown bootstrap-select show bootstrap-select-inline">
-                                    <div class="row">
-                                <label for="inputAge" class="col-sm-4 col-form-label">Animal</label>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="selectAnimal">Animal</label>
                                 <div class="col-sm-8">
-                                    <select class="selectpicker form-control" id="selectPreferences" multiple
-                                            data-max-options="2" data-style="" data-min-options="2" required>
-                                        <option>Pony</option>
-                                        <option>Wolf</option>
-                                        <option>Tiger</option>
+                                    <select id="selectAnimal" name="tag" class="form-control" required>
+                                            {% for tag in tags %}
+                                               <option value="{{tag.id}}"
+                                               {% if tag == character.tag %}selected="selected"{% endif %}>
+                                               {{tag}}
+                                            {% endfor %}
                                     </select>
-                                </div>
-                                        </div>
                                 </div>
                             </div>
                             <fieldset class="form-group">
@@ -113,56 +112,33 @@
                                     <div class="col-sm-8">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
-                                                   id="sfw"
-                                                   value="0" name="notSaveForWork">
+                                                   id="sfw" name="sfwRadio" {% if not character.nsfw.all %}checked{% endif %}>
                                             <label class="form-check-label" for="sfw">
                                                 SFW
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
-                                                   id="nsfw"
-                                                   value="1" name="notSaveForWork">
+                                                   id="nsfw" name="sfwRadio" {% if character.nsfw.all %}checked{% endif %}>
                                             <label class="form-check-label" for="nsfw">
                                                 NSFW
                                             </label>
                                             <div id="nsfwDetails">
+                                                {% for nsfw_type in nsfw_types %}
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input"
                                                            type="checkbox"
-                                                           id="inlineCheckbox1"
-                                                           value="option1">
+                                                           name="nsfw[]"
+                                                           id="nsfwType{{ nsfw_type.name }}"
+                                                           value="{{ nsfw_type.id }}" {% if nsfw_type in character.nsfw.all %}checked{% endif %}>
                                                     <label class="form-check-label"
-                                                           for="inlineCheckbox1">Soft</label>
+                                                           for="nsfwType{{ nsfw_type.name }}">{{ nsfw_type.name }}</label>
                                                     <a class="fa fa-question-circle help-tooltip"
-                                                       data-original-title="Visible genitals (also nipples), acts (no sex scenes!)"
+                                                       data-original-title="{{ nsfw_type.description }}"
                                                        data-placement="right"
                                                        data-toggle="tooltip"></a>
                                                 </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input"
-                                                           type="checkbox"
-                                                           id="inlineCheckbox2"
-                                                           value="option2">
-                                                    <label class="form-check-label"
-                                                           for="inlineCheckbox2" title="">Hard</label>
-                                                    <a class="fa fa-question-circle help-tooltip"
-                                                       data-original-title="Any types of fetishes, sex scenes etc."
-                                                       data-placement="right"
-                                                       data-toggle="tooltip"></a>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input"
-                                                           type="checkbox"
-                                                           id="inlineCheckbox3"
-                                                           value="option3">
-                                                    <label class="form-check-label"
-                                                           for="inlineCheckbox3" title="">Gore</label>
-                                                    <a class="fa fa-question-circle help-tooltip"
-                                                       data-original-title="Blood, pastel gore, violence and everything related"
-                                                       data-placement="right"
-                                                       data-toggle="tooltip"></a>
-                                                </div>
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     </div>
@@ -171,18 +147,17 @@
                             <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea class="form-control" id="description" rows="2"
-                                          maxlength="250"></textarea>
+                                          maxlength="250" name="description">{{ character.description }}</textarea>
                             </div>
                             <div class="form-group">
-                                <label for="description">Hints for
-                                    drawer</label>
+                                <label for="description">Hints for drawer</label>
+                                {{ form_settings.hints.errors }}
                                 <textarea class="form-control" id="description" rows="1"
-                                          maxlength="100"></textarea>
+                                          maxlength="100" name="hints">{{ character.hints }}</textarea>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary">Save
-                                    </button>
+                                    <button type="submit" class="btn btn-primary" name="character">Save</button>
                                 </div>
                             </div>
                         </div>
