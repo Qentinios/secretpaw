@@ -1,34 +1,52 @@
 <div class="tab-pane" id="gift">
     <p class="lead">Gift from you</p>
-    <h5>Recipient: Alice</h5>
+    {% if gift_from_you %}
+    <h5>Recipient: {{ gift_from_you.recipient }}</h5>
     <div class="card gift-card m-2 p-2 w-100">
-        <form>
-            <div class="form-group">
-                <label for="inputGift">Gift</label>
-                <input type="file" class="form-control-file" id="inputGift"
-                       aria-describedby="fileHelp">
-                <small id="fileHelp" class="form-text text-muted">Max 512x512, 5mb, png/jpg only
-                </small>
-            </div>
-            <img src="https://cdn.shopify.com/s/files/1/0952/9016/products/Flower-Kitty-Jeremiah-Ketner.jpg" class="card-img-top gift" alt="Your gift">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if gift_from_you.picture %}
+                <img class="card-img-top"
+                     src="{{ MEDIA_URL }}{{ gift_from_you.picture }}"
+                     alt="Gift from you">
+            {% else %}
+                <div class="form-group">
+                    <label for="inputGift">Gift</label>
+                    {{ form_gift.picture.errors }}
+                    <input type="file" class="form-control-file" id="inputGift"
+                           aria-describedby="fileHelp" name="picture" required>
+                    <small id="fileHelp" class="form-text text-muted">Max 512x512, 5mb, png/jpg only
+                    </small>
+                </div>
+            {% endif %}
             <div class="form-group mt-4">
                 <label for="inputWishes">Wishes</label>
+                {{ form_gift.wishes.errors }}
                 <input type="text" class="form-control" id="inputWishes"
-                       placeholder="All the best!">
+                       placeholder="All the best!" name="wishes"
+                       value="{% if gift_from_you.wishes %}{{ gift_from_you.wishes }}{% endif %}">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" name="gift">Submit</button>
         </form>
     </div>
+    {% else %}
+    <h5>Recipient: ?</h5>
+    {% endif %}
     <hr>
     <p class="lead">Gift for you</p>
+    {% if gift_for_you and gift_for_you.picture %}
     <div class="card gift-card m-2 p-2 w-100">
-        <img src="https://www.interregemr.eu/IManager/Media/65321/1599724/EN/reg/people-to-people.jpg"
-             class="card-img-top gift" alt="Gif four you">
+                <img class="card-img-top"
+                     src="{{ MEDIA_URL }}{{ gift_for_you.picture }}"
+                     alt="Gift for you">
         <div class="card-body">
             <blockquote class="blockquote card-text">
-                <p class="mb-0">I hope you like it!</p>
-                <footer class="blockquote-footer"> Unbridle</footer>
+                <p class="mb-0">{% if gift_for_you.wishes %}{{ gift_for_you.wishes }}{% endif %}</p>
+                <footer class="blockquote-footer"> {{ gift_for_you.giver }}</footer>
             </blockquote>
         </div>
     </div>
+    {% else %}
+        <p>Not yet :(</p>
+    {% endif %}
 </div><!--/tab-pane-->

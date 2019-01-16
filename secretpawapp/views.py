@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django_registration.backends.activation.views import RegistrationView as BaseRegistrationView
 
 from secretpaw import settings
-from secretpawapp.forms import PawgateForm, SettingsForm, CharacterForm
-from secretpawapp.models import Profile, Tag, CharacterNSFWTypes, Character
+from secretpawapp.forms import PawgateForm, SettingsForm, CharacterForm, CharacterRemoveForm, GiftForm
+from secretpawapp.models import Profile, Tag, CharacterNSFWTypes, Character, Gift
 
 
 class RegistrationView(BaseRegistrationView):
@@ -43,10 +43,6 @@ def pawgate(request):
     return render(request, 'secretpawapp/pawgate.html', {'form': form})
 
 
-def _form_character_remove(request):
-    pass
-
-
 @login_required
 def profile(request):
     profile_obj = Profile.objects\
@@ -54,19 +50,25 @@ def profile(request):
         .prefetch_related('tags')\
         .get(user_id=request.user.id)
 
-    form_character = _form_character(request, profile_obj)
     form_settings = _form_settings(request, profile_obj)
-    form_character_remove = _form_character_remove(request)
+    form_character = _form_character(request, profile_obj)
+    _form_character_remove(request)
+    form_gift = _form_gift(request)
 
     tags = Tag.objects.all()
     nsfw_types = CharacterNSFWTypes.objects.all()
     characters = Character.objects.filter(owner=profile_obj)
+    gift_from_you = Gift.objects.get(giver=request.user.id)
+    gift_for_you = Gift.objects.get(recipient=request.user.id)
 
     return render(request, 'secretpawapp/profile.html', {
         'form_settings': form_settings,
         'form_character': form_character,
+        'form_gift': form_gift,
         'profile': profile_obj,
         'characters': characters,
+        'gift_from_you': gift_from_you,
+        'gift_for_you': gift_for_you,
         'tags': tags,
         'nsfw_types': nsfw_types
     })
@@ -128,3 +130,36 @@ def _form_character(request, profile_obj):
         form_character = CharacterForm()
 
     return form_character
+
+
+def _form_character_remove(request):
+    if request.method == 'POST' and "character_delete" in request.POST:
+        form_character_remove = CharacterRemoveForm(request.POST)
+        if form_character_remove.is_valid():
+            character_id = request.POST['character_id']
+
+            if character_id:
+                Character.objects\
+                    .get(id=character_id)\
+                    .delete()
+                # TODO: what if character not found ?
+
+
+def _form_gift(request):
+    if request.method == 'POST' and "gift" in request.POST:
+        form_gift = GiftForm(request.POST, request.FILES)
+        if form_gift.is_valid():
+            gift = Gift.objects\
+                .get(giver=request.user.id)
+
+            image = form_gift.cleaned_data['picture']
+            if image:
+                gift.picture = image
+            gift.wishes = form_gift.cleaned_data['wishes']
+            gift.save()
+
+    else:
+        form_gift = CharacterForm()
+
+    return form_gift
+

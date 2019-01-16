@@ -5,7 +5,7 @@ from django_registration.forms import RegistrationFormUniqueEmail
 from django import forms
 
 from secretpaw import settings
-from secretpawapp.models import Profile, Tag, Character, CharacterNSFWTypes
+from secretpawapp.models import Profile, Tag, Character, CharacterNSFWTypes, Gift
 
 
 def validate_secret_correctness(secret):
@@ -83,4 +83,11 @@ class CharacterForm(ModelForm):
 class CharacterRemoveForm(ModelForm):
     class Meta:
         model = Character
-        fields = 'id'
+        fields = ['id']
+
+
+class GiftForm(ModelForm):
+    class Meta:
+        model = Gift
+        fields = '__all__'
+        exclude = ['giver', 'recipient']

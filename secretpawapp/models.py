@@ -55,10 +55,10 @@ class Character(models.Model):
 
 
 class Gift(models.Model):
-    giver = models.OneToOneField(Profile, related_name='giver', on_delete=models.DO_NOTHING)
-    recipient = models.OneToOneField(Profile, related_name='recipient', on_delete=models.DO_NOTHING)
-    picture = models.ImageField(upload_to='gift', null=True)
-    wishes = models.CharField(max_length=100, null=True)
+    giver = models.OneToOneField(Profile, related_name='giver', on_delete=models.CASCADE, unique=True)
+    recipient = models.OneToOneField(Profile, related_name='recipient', on_delete=models.CASCADE, unique=True)
+    picture = models.ImageField(upload_to='gift', null=True, blank=True)
+    wishes = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.giver.user.username + " > " + self.recipient.user.username

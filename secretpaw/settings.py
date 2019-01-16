@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True # config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'secretpawapp.middleware.PawgateMiddleware'
+    #'secretpawapp.middleware.PawgateMiddleware'
 ]
 
 ROOT_URLCONF = 'secretpaw.urls'
@@ -129,6 +129,7 @@ MEDIA_URL = '/file/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'file')
 
 LOGOUT_REDIRECT_URL = '/accounts/login'
+LOGIN_REDIRECT_URL = '/'
 
 ACCOUNT_ACTIVATION_DAYS = 3
 
