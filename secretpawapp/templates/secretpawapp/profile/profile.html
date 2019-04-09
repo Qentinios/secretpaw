@@ -53,6 +53,7 @@
     </div>
     <div class="mt-4">
         <p class="lead">Description</p>
-        <p>{{ profile.description }}</p>
+        <hr>
+        {{ profile.description | safe }}
     </div>
 </div><!--/tab-pane-->

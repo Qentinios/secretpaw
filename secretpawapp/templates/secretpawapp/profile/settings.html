@@ -19,7 +19,7 @@
             <div class="form-group">
                 <label for="inputDescription">Description</label>
                 {{ form_settings.description.errors }}
-                <textarea class="form-control" id="inputDescription" rows="3" name="description">{{ form_settings.description.value|default:profile.description }}</textarea>
+                <textarea class="form-control bbcode_editor" id="inputDescription" rows="12" name="description">{{ form_settings.description.value|default:profile.description }}</textarea>
             </div>
             <div class="form-group">
                 <label for="selectPreferences">What can I draw</label>
