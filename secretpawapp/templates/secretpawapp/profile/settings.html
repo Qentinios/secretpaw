@@ -22,18 +22,16 @@
                 <textarea class="form-control" id="inputDescription" rows="3" name="description">{{ form_settings.description.value|default:profile.description }}</textarea>
             </div>
             <div class="form-group">
-                <div class="dropdown bootstrap-select show">
-                    <label for="selectPreferences">What can I draw</label>
-                    {{ form_settings.tags.errors }}
-                    <select class="selectpicker" id="selectPreferences" multiple
-                            data-max-options="2" data-style="" data-min-options="2" name="tags" required>
-                            {% for tag in tags %}
-                               <option value="{{tag.id}}"
-                               {% if tag in profile.tags.all %}selected="selected"{% endif %}>
-                               {{tag}}
-                            {% endfor %}
-                    </select>
-                </div>
+                <label for="selectPreferences">What can I draw</label>
+                {{ form_settings.tags.errors }}
+                <select class="selectpicker" id="selectPreferences" multiple
+                        data-max-options="2" data-min-options="2" name="tags" required>
+                        {% for tag in tags %}
+                           <option value="{{tag.id}}"
+                           {% if tag in profile.tags.all %}selected="selected"{% endif %}>
+                           {{tag}}
+                        {% endfor %}
+                </select>
             </div>
             <button type="submit" class="btn btn-primary" name="settings">Submit</button>
         </form>
