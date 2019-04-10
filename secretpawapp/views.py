@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -87,6 +88,10 @@ def _form_settings(request, profile_obj):
             profile_obj.tags.set(request.POST.getlist('tags'))
             profile_obj.save()
 
+            messages.info(request, 'Profile details updated.')
+
+            return HttpResponseRedirect('/')
+
     else:
         form_settings = SettingsForm()
 
@@ -100,12 +105,16 @@ def _form_character(request, profile_obj):
             character_id = request.POST['character_id']
 
             if character_id:
-                character_obj = Character.objects\
-                    .prefetch_related('nsfw')\
-                    .get(id=character_id)
-                # TODO: what if character not found ?
+                try:
+                    character_obj = Character.objects\
+                        .prefetch_related('nsfw')\
+                        .get(id=character_id)
+                except Character.DoesNotExist:
+                    return HttpResponseRedirect('/')
+                messages.info(request, 'Character updated.')
             else:
                 character_obj = Character()
+                messages.success(request, 'Character created.')
 
             image = form_character.cleaned_data['picture']
             if image:
@@ -123,8 +132,8 @@ def _form_character(request, profile_obj):
             character_obj.save()
             character_obj.nsfw.set(request.POST.getlist('nsfw[]'))
             character_obj.save()
-        else:
-            print(form_character.errors)
+
+            return HttpResponseRedirect('/')
 
     else:
         form_character = CharacterForm()
@@ -139,10 +148,15 @@ def _form_character_remove(request):
             character_id = request.POST['character_id']
 
             if character_id:
-                Character.objects\
-                    .get(id=character_id)\
-                    .delete()
-                # TODO: what if character not found ?
+                try:
+                    Character.objects\
+                        .get(id=character_id)\
+                        .delete()
+                except Character.DoesNotExist:
+                    pass
+                messages.warning(request, 'Character deleted.')
+
+    return HttpResponseRedirect('/')
 
 
 def _form_gift(request):
@@ -157,6 +171,9 @@ def _form_gift(request):
                 gift.picture = image
             gift.wishes = form_gift.cleaned_data['wishes']
             gift.save()
+            messages.success(request, 'Gift has been send for approval.')
+
+            return HttpResponseRedirect('/')
 
     else:
         form_gift = CharacterForm()
