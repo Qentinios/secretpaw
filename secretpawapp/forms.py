@@ -3,9 +3,9 @@ from django.core.validators import RegexValidator
 from django.forms import ModelForm
 from django_registration.forms import RegistrationFormUniqueEmail
 from django import forms
-
+from django.core.validators import FileExtensionValidator
 from secretpaw import settings
-from secretpawapp.models import Profile, Tag, Character, CharacterNSFWTypes, Gift
+from secretpawapp.models import Profile, Tag, Character, Gift
 
 
 def validate_secret_correctness(secret):
@@ -58,7 +58,7 @@ class RegistrationFormUniqueEmailAndFacebook(RegistrationFormUniqueEmail):
 
 
 def validate_max_size(image):
-    if image.size > 5*1024*1024:
+    if image.size > 5 * 1024 * 1024:
         raise ValidationError("Image file too large ( > 5mb )")
 
 
@@ -67,7 +67,8 @@ class SettingsForm(ModelForm):
         model = Profile
         fields = ['avatar', 'status', 'description', 'tags']
 
-    avatar = forms.ImageField(required=False, validators=[validate_max_size])
+    avatar = forms.ImageField(required=False, validators=[validate_max_size,
+                                                          FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])])
     tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
 
 
@@ -77,7 +78,8 @@ class CharacterForm(ModelForm):
         fields = '__all__'
         exclude = ['owner']
 
-    picture = forms.ImageField(required=False, validators=[validate_max_size])
+    picture = forms.ImageField(required=False, validators=[validate_max_size,
+                                                           FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])])
 
 
 class CharacterRemoveForm(ModelForm):
