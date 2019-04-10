@@ -34,10 +34,10 @@ class Profile(models.Model):
 
 class Character(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    picture = models.ImageField(null=True, upload_to='character')
+    picture = models.ImageField(upload_to='character')
     picture_author = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
-    age = models.PositiveIntegerField()
+    age = models.PositiveIntegerField(null=True, blank=True)
     race = models.CharField(max_length=50, blank=True)
     SEX = (
         ('W', 'Girl'),
