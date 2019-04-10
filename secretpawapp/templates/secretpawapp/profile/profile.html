@@ -13,7 +13,9 @@
                         <form method="post">
                             {% csrf_token %}
                             <input type="hidden" name="character_id" value="{{ character.id }}">
-                            <button type="submit" class="close" name="character_delete" aria-label="Close">
+                            <button type="submit" class="close" name="character_delete"
+                                    onclick="return confirm('You are going to delete this character. Are you sure?');"
+                                    aria-label="Close">
                                 <span aria-hidden="true" class="remove-character">×</span>
                             </button>
                         </form>

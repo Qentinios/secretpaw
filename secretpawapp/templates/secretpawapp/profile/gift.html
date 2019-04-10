@@ -26,6 +26,14 @@
                        placeholder="All the best!" name="wishes"
                        value="{% if gift_from_you.wishes %}{{ gift_from_you.wishes }}{% endif %}">
             </div>
+            {% if not gift_from_you.picture %}
+            <div class="form-group mt-4">
+                <div class="form-check form-check-inline">
+                <input type="checkbox" class="form-control" id="confirmGift" required>
+                <label for="confirmGift">This is final version of my work and I am aware that I can't change it once send.</label>
+                </div>
+            </div>
+            {% endif %}
             <button type="submit" class="btn btn-primary" name="gift">Submit</button>
         </form>
     </div>
