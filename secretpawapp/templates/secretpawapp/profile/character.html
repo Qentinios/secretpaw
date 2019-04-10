@@ -21,10 +21,8 @@
                                 <label for="inputCharacter">Character picture</label>
                                 <input type="file" class="form-control-file"
                                        id="inputCharacter"
-                                       aria-describedby="fileHelp" name="picture">
-                                <small id="fileHelp" class="form-text text-muted">Max
-                                    512x512,
-                                    5mb, png/jpg only
+                                       aria-describedby="fileHelp" name="picture" required>
+                                <small id="fileHelp" class="form-text text-muted">Max 5mb, png/jpg only
                                 </small>
                             </div>
 
@@ -33,7 +31,7 @@
                                        class="col-sm-4 col-form-label">Art by</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control"
-                                           id="inputAuthor" name="picture_author" value="{{ character.picture_author }}">
+                                           id="inputAuthor" name="picture_author" value="{{ character.picture_author }}" required>
                                 </div>
                             </div>
                         </div>
@@ -42,7 +40,7 @@
                                 <label for="inputName"
                                        class="col-sm-4 col-form-label">Name</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputName" name="name" value="{{ character.name }}">
+                                    <input type="text" class="form-control" id="inputName" name="name" value="{{ character.name }}" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -66,7 +64,7 @@
                                     <div class="col-sm-8">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
-                                                   id="sexGirl"
+                                                   id="sexGirl" required
                                                    value="W" name="sex" {% if "W" == character.sex %}checked{% endif %}>
                                             <label class="form-check-label radio-inline"
                                                    for="sexGirl">
@@ -75,7 +73,7 @@
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
-                                                   id="sexBoy"
+                                                   id="sexBoy" required
                                                    value="M" name="sex" {% if "M" == character.sex %}checked{% endif %}>
                                             <label class="form-check-label" for="sexBoy">
                                                 Boy
@@ -83,7 +81,7 @@
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
-                                                   id="sexOther"
+                                                   id="sexOther" required
                                                    value="O" name="sex" {% if "O" == character.sex %}checked{% endif %}>
                                             <label class="form-check-label" for="sexOther">
                                                 Other
@@ -111,14 +109,14 @@
                                     </legend>
                                     <div class="col-sm-8">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
+                                            <input class="form-check-input" type="radio" required
                                                    id="sfw" name="sfwRadio" {% if not character.nsfw.all %}checked{% endif %}>
                                             <label class="form-check-label" for="sfw">
                                                 SFW
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
+                                            <input class="form-check-input" type="radio" required
                                                    id="nsfw" name="sfwRadio" {% if character.nsfw.all %}checked{% endif %}>
                                             <label class="form-check-label" for="nsfw">
                                                 NSFW

@@ -7,8 +7,6 @@
         </div>
         <div class="row">
             <div class="col-sm-3"><!--left col-->
-
-
                 <div class="text-center mb-2">
                     {% if profile.avatar %}
                         <img src="{{ MEDIA_URL }}{{ profile.avatar }}" class="avatar img-thumbnail"
@@ -31,6 +29,44 @@
 
             </div><!--/col-3-->
             <div class="col-sm-9">
+                {% if form_character.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {% for field in form_character %}
+                            {% if field.errors %}
+                            <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if form_settings.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {% for field in form_settings %}
+                            {% if field.errors %}
+                            <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if form_gift.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {% for field in form_gift %}
+                            {% if field.errors %}
+                            <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <ul class="nav nav-tabs">
                     <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#profile">Profile</a></li>
                     <li class="nav-item"><a class="nav-link glow fa fa-gift" data-toggle="tab" href="#gift">Gift</a>
