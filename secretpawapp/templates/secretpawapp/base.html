@@ -4,9 +4,9 @@
         <title>Secret Paws</title>
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
         <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
         <link rel="stylesheet" href="{% static 'css/secretpaw.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     </head>
     <body>
         {% block content %}
@@ -24,6 +24,9 @@
                 toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | fontsizeselect | forecolor backcolor",
                 height: "480"
             });
+            $(document).ready(function () {$(function () {
+              $('[data-toggle="popover"]').popover()
+            })});
         </script>
     </body>
 </html>
