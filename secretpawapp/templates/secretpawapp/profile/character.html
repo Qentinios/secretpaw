@@ -21,7 +21,8 @@
                                 <label for="inputCharacter">Character picture</label>
                                 <input type="file" class="form-control-file"
                                        id="inputCharacter"
-                                       aria-describedby="fileHelp" name="picture" required>
+                                       aria-describedby="fileHelp" name="picture"
+                                       {% if not character.picture %} required{% endif %}>
                                 <small id="fileHelp" class="form-text text-muted">Max 5mb, png/jpg only
                                 </small>
                             </div>
@@ -62,31 +63,17 @@
                                 <div class="row">
                                     <legend class="col-form-label col-sm-4 pt-0">Sex</legend>
                                     <div class="col-sm-8">
+                                        {% for sex_choice_name, sex_choice_value in sex_choices %}
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
-                                                   id="sexGirl" required
-                                                   value="W" name="sex" {% if "W" == character.sex %}checked{% endif %}>
+                                                   id="sex{{ sex_choice_value }}" required
+                                                   value="{{ sex_choice_name }}" name="sex" {% if sex_choice_name == character.sex %}checked{% endif %}>
                                             <label class="form-check-label radio-inline"
-                                                   for="sexGirl">
-                                                Girl
+                                                   for="sex{{ sex_choice_value }}">
+                                                {{ sex_choice_value }}
                                             </label>
                                         </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
-                                                   id="sexBoy" required
-                                                   value="M" name="sex" {% if "M" == character.sex %}checked{% endif %}>
-                                            <label class="form-check-label" for="sexBoy">
-                                                Boy
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
-                                                   id="sexOther" required
-                                                   value="O" name="sex" {% if "O" == character.sex %}checked{% endif %}>
-                                            <label class="form-check-label" for="sexOther">
-                                                Other
-                                            </label>
-                                        </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </fieldset>

@@ -1,3 +1,5 @@
+from enum import Enum
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
@@ -39,12 +41,17 @@ class Character(models.Model):
     name = models.CharField(max_length=50)
     age = models.PositiveIntegerField(null=True, blank=True)
     race = models.CharField(max_length=50, blank=True)
-    SEX = (
-        ('W', 'Girl'),
-        ('M', 'Boy'),
-        ('O', 'Other'),
+
+    WOMEN = 'W'
+    MEN = 'M'
+    OTHER = 'O'
+    SEX_CHOICES = (
+        (WOMEN, 'Girl'),
+        (MEN, 'Boy'),
+        (OTHER, 'Other'),
     )
-    sex = models.CharField(choices=SEX, max_length=1)
+
+    sex = models.CharField(choices=SEX_CHOICES, max_length=1)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     nsfw = models.ManyToManyField(CharacterNSFWTypes, blank=True)
     description = models.TextField(max_length=250, blank=True)
@@ -55,8 +62,8 @@ class Character(models.Model):
 
 
 class Gift(models.Model):
-    giver = models.OneToOneField(Profile, related_name='giver', on_delete=models.CASCADE, unique=True)
-    recipient = models.OneToOneField(Profile, related_name='recipient', on_delete=models.CASCADE, unique=True)
+    giver = models.ForeignKey(Profile, related_name='gift_giver', on_delete=models.CASCADE, unique=True)
+    recipient = models.ForeignKey(Profile, related_name='gift_recipient', on_delete=models.CASCADE, unique=True)
     picture = models.ImageField(upload_to='gift', null=True, blank=True)
     wishes = models.CharField(max_length=100, null=True, blank=True)
 
