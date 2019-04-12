@@ -31,5 +31,6 @@ urlpatterns = [
     url(r'^accounts/', include('django_registration.backends.activation.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     path('pawgate/', views.pawgate),
-    url(r'^$', views.profile)
+    url(r'^$', views.profile),
+    path('profile/<share_link>', views.visitor)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,46 @@
+{% extends 'secretpawapp/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-sm-10 inline-group">
+                <h1>{{ profile.user }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3"><!--left col-->
+                <div class="text-center mb-2">
+                    {% if profile.avatar %}
+                        <img src="{{ MEDIA_URL }}{{ profile.avatar }}" class="avatar img-thumbnail"
+                         alt="avatar">
+                    {% else %}
+                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-thumbnail"
+                         alt="avatar">
+                    {% endif %}
+                </div>
+
+                <div class="status">
+                    {{ profile.status }}
+                </div>
+
+                <div class="preferences mt-3">
+                    {% for tag in profile.tags.all %}
+                        <span class="badge badge-warning">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+
+            </div><!--/col-3-->
+            <div class="col-sm-9">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#profile">Profile</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    {% include 'secretpawapp/visitor/profile.html' %}
+                </div><!--/tab-pane-->
+            </div><!--/tab-content-->
+
+        </div><!--/col-9-->
+    </div><!--/row-->
+
+{% endblock %}

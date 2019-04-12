@@ -1,7 +1,7 @@
 <div class="tab-pane" id="gift">
     <p class="lead">Gift from you</p>
     {% if gift_from_you %}
-    <h5>Recipient: {{ gift_from_you.recipient }}</h5>
+    <h5>Recipient: <a href="http://localhost:8000/profile/{{ rewarded_profile_url }}">{{ gift_from_you.recipient }}</a></h5>
     <div class="card gift-card m-2 p-2 w-100">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}

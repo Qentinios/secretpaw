@@ -2,3 +2,4 @@ django
 django-registration==3.0
 python-decouple
 Pillow
+hashids

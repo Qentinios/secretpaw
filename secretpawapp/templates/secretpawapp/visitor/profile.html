@@ -1,0 +1,36 @@
+<div class="tab-pane active" id="profile">
+    <div class="container-fluid characters">
+        <div class="row">
+            <p class="lead">Characters</p>
+        </div>
+        <div class="row flex-row flex-nowrap mb-2">
+            {% for character in characters.all %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
+                    <div class="card flex-fill">
+                        <a data-toggle="modal" data-target="#characterDetails_{{ character.id }}" href=""
+                           class="deco-none">
+                            {% if character.picture %}
+                                <img class="card-img-top"
+                                     src="{{ MEDIA_URL }}{{ character.picture }}"
+                                     alt="Card image cap">
+                            {% else %}
+                                <img class="card-img-top"
+                                     src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                                     alt="Card image cap">
+                            {% endif %}
+                            <div class="card-body">
+                                <p class="card-text character-text">{{ character.name }}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% include 'secretpawapp/visitor/character.html' %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="mt-4">
+        <p class="lead">Description</p>
+        <hr>
+        {{ profile.description | safe }}
+    </div>
+</div><!--/tab-pane-->

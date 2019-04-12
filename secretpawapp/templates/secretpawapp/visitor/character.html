@@ -1,0 +1,124 @@
+<div class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel" aria-hidden="true" id="characterDetails_{{ character.id }}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">{{ character.name }}</h4>
+                <a href="" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <form>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        {% if character.picture %}
+                            <img src="{{ MEDIA_URL }}{{ character.picture }}" class="card-img-top gift" alt="Your character">
+                        {% endif %}
+
+                        <div class="form-group row">
+                            <label for="inputAuthor"
+                                   class="col-sm-4 col-form-label">Art by</label>
+                            <div class="col-sm-8">
+                                <p>{{ character.picture_author }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group row">
+                            <label for="inputName"
+                                   class="col-sm-4 col-form-label">Name</label>
+                            <div class="col-sm-8">
+                                <p>{{ character.name }}</p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputAge"
+                                   class="col-sm-4 col-form-label">Age</label>
+                            <div class="col-sm-8">
+                                <p>{{ character.age }}</p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputRace"
+                                   class="col-sm-4 col-form-label">Race</label>
+                            <div class="col-sm-8">
+                                <p>{{ character.race }}</p>
+                            </div>
+                        </div>
+                        <fieldset class="form-group">
+                            <div class="row">
+                                <legend class="col-form-label col-sm-4 pt-0">Sex</legend>
+                                <div class="col-sm-8">
+                                    {% for sex_choice_name, sex_choice_value in sex_choices %}
+                                        {% if sex_choice_name == character.sex %}<p>{{ sex_choice_value }}</p>{% endif %}
+                                    {% endfor%}
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="selectAnimal">Animal</label>
+                            <div class="col-sm-8">
+                                <p>{{ character.tag }}</p>
+                            </div>
+                        </div>
+                        <fieldset class="form-group">
+                            <div class="row">
+                                <legend class="col-form-label col-sm-4 pt-0">
+                                    Save for work
+                                </legend>
+                                <div class="col-sm-8">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" required
+                                               id="sfw" name="sfwRadio"
+                                               {% if not character.nsfw.all %} checked="checked"{% endif %} disabled>
+                                        <label class="form-check-label" for="sfw">
+                                            SFW
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" required
+                                               id="nsfw" name="sfwRadio"
+                                               {% if character.nsfw.all %} checked="checked"{% endif %} disabled>
+                                        <label class="form-check-label" for="nsfw">
+                                            NSFW
+                                        </label>
+                                        <div id="nsfwDetails">
+                                            {% for nsfw_type in nsfw_types %}
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input"
+                                                       type="checkbox"
+                                                       name="nsfw[]"
+                                                       id="nsfwType{{ nsfw_type.name }}"
+                                                       value="{{ nsfw_type.id }}" {% if nsfw_type in character.nsfw.all %}checked{% endif %}
+                                                       disabled>
+                                                <label class="form-check-label"
+                                                       for="nsfwType{{ nsfw_type.name }}">{{ nsfw_type.name }}</label>
+                                                <a class="fa fa-question-circle help-tooltip"
+                                                   data-original-title="{{ nsfw_type.description }}"
+                                                   data-placement="right"
+                                                   data-toggle="tooltip"></a>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-12 col-md-12">
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            {{ character.description | safe }}
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Hints for drawer</label>
+                            <p>{{ character.hints }}</p>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,11 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from django_registration.backends.activation.views import RegistrationView as BaseRegistrationView
 
 from secretpaw import settings
 from secretpawapp.forms import PawgateForm, SettingsForm, CharacterForm, CharacterRemoveForm, GiftForm
+from secretpawapp.helpers import encode_profile_url, decode_profile_url
 from secretpawapp.models import Profile, Tag, CharacterNSFWTypes, Character, Gift
 
 
@@ -59,19 +61,39 @@ def profile(request):
     tags = Tag.objects.all()
     nsfw_types = CharacterNSFWTypes.objects.all()
     characters = Character.objects.filter(owner=profile_obj)
-    gift_from_you = Gift.objects.get(giver=request.user.id)
-    gift_for_you = Gift.objects.get(recipient=request.user.id)
+    gift_from_you = Gift.objects.get(giver=profile_obj)
+    gift_for_you = Gift.objects.get(recipient=profile_obj)
+
+    if gift_from_you:
+        rewarded_profile_url = encode_profile_url(gift_from_you.recipient.user_id)
+    else:
+        rewarded_profile_url = None
+
+    profile_url = encode_profile_url(request.user.id)
+    sex_choices = Character.SEX_CHOICES
 
     return render(request, 'secretpawapp/profile.html', {
-        'form_settings': form_settings,
-        'form_character': form_character,
-        'form_gift': form_gift,
-        'profile': profile_obj,
-        'characters': characters,
-        'gift_from_you': gift_from_you,
-        'gift_for_you': gift_for_you,
-        'tags': tags,
-        'nsfw_types': nsfw_types
+        'form_settings': form_settings, 'form_character': form_character, 'form_gift': form_gift, 'share_link': profile_url,
+        'profile': profile_obj, 'characters': characters, 'tags': tags, 'nsfw_types': nsfw_types, 'sex_choices': sex_choices,
+        'gift_from_you': gift_from_you, 'gift_for_you': gift_for_you, 'rewarded_profile_url': rewarded_profile_url
+    })
+
+
+def visitor(request, share_link):
+    user_id = decode_profile_url(share_link)
+
+    profile_obj = Profile.objects\
+        .select_related('user')\
+        .prefetch_related('tags')\
+        .get(user_id=user_id)
+
+    tags = Tag.objects.all()
+    nsfw_types = CharacterNSFWTypes.objects.all()
+    characters = Character.objects.filter(owner=profile_obj)
+    sex_choices = Character.SEX_CHOICES
+
+    return render(request, 'secretpawapp/visitor.html', {
+        'profile': profile_obj, 'characters': characters, 'tags': tags, 'nsfw_types': nsfw_types, 'sex_choices': sex_choices,
     })
 
 

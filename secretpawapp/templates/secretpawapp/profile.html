@@ -4,12 +4,11 @@
     <div class="container">
         <div class="row mb-3">
             <div class="col-sm-10 inline-group">
-                <h1>Qentinios</h1>
+                <h1>{{ request.user }}</h1>
                 <div class="btn-group" role="group">
                   <a class="btn btn-info" href="http://localhost:8000/accounts/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>
                   <button type="button" class="btn btn-warning" data-toggle="popover" title="Profile visitor link"
-                          data-content="profile link"><i class="fas fa-share-square"></i> Share profile link</button>
-
+                          data-content="http://localhost:8000/profile/{{ share_link }}"><i class="fas fa-share-square"></i> Share profile link</button>
                 </div>
             </div>
         </div>
